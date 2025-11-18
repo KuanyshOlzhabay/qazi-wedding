@@ -195,6 +195,58 @@
         </div>
     </section>
 
+    <!-- RSVP Section -->
+    <section class="page page-6" id="page6" role="region" aria-labelledby="rsvp-title">
+        <div class="container" data-aos="fade-up">
+            <h2 class="section-title" id="rsvp-title" data-aos="fade-up">RSVP • Қатысатыныңызды растаңыз</h2>
+            <div class="rsvp-card" data-aos="fade-up" data-aos-delay="150">
+
+                <form id="rsvpForm" class="rsvp-form" novalidate>
+                    <div class="form-group">
+                        <label for="fullName">Аты‑жөніңіз <span aria-hidden="true" class="req">*</span></label>
+                        <input type="text" id="fullName" name="fullName" class="form-control" placeholder="Атыңыз және тегі" required>
+                        <div class="error-text" id="err-fullName" role="alert"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <span class="label">Қатысасыз ба? <span aria-hidden="true" class="req">*</span></span>
+                        <div class="radio-group" role="radiogroup" aria-labelledby="attending-label" id="attending-group">
+                            <label class="radio"><input type="radio" name="attending" value="Иә" required> Иә</label>
+                            <label class="radio"><input type="radio" name="attending" value="Жоқ" required> Жоқ</label>
+                        </div>
+                        <div class="error-text" id="err-attending" role="alert"></div>
+                    </div>
+
+                    <div class="form-group" id="guests-wrapper">
+                        <label for="guestCount">Қонақ саны <span aria-hidden="true" class="req">*</span></label>
+                        <select id="guestCount" name="guestCount" class="form-control" required>
+                            <option value="" disabled selected>Таңдаңыз…</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                        <small class="help-text">Өзіңізді қосқанда жалпы саны.</small>
+                        <div class="error-text" id="err-guestCount" role="alert"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Телефон (қалауыңыз бойынша)</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="+7…">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" id="rsvpSubmit" class="map-button btn-submit">Жіберу</button>
+                        <div class="form-status" id="formStatus" aria-live="polite"></div>
+                    </div>
+                </form>
+
+                <div class="rsvp-result" id="rsvpResult" hidden>
+                    <div class="success-banner">Рақмет! Жауабыңыз қабылданды. Көріскенше!</div>
+                    <p class="rsvp-actions"><a class="map-button rsvp-link" id="openSheetLink" target="_blank" rel="noopener">RSVP журналын ашу</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>
 </body>

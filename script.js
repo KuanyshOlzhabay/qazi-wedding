@@ -282,3 +282,143 @@ function animateText() {
 
 animateText();
 
+
+
+/* === RSVP: Native form submission to Google Apps Script === */
+(function() {
+    const form = document.getElementById('rsvpForm');
+    if (!form) return;
+
+    const submitBtn = document.getElementById('rsvpSubmit');
+    const statusEl = document.getElementById('formStatus');
+    const resultWrap = document.getElementById('rsvpResult');
+    const openSheetLink = document.getElementById('openSheetLink');
+    const guestsWrapper = document.getElementById('guests-wrapper');
+    const guestCountEl = document.getElementById('guestCount');
+
+    // Put your deployed Web App URL here after you publish Apps Script
+    const RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzFGD8UTV7Y8yQDICoBBBCxauVomTOn-T0kar2wTewkA8BYLQRwklLNsHvOj33OQDsxQQ/exec';
+    const RSVP_SHEET_LINK = ''; // Optional: paste Google Sheet URL if you want the admin link to appear
+
+    if (openSheetLink && RSVP_SHEET_LINK) {
+        openSheetLink.href = RSVP_SHEET_LINK;
+    } else if (openSheetLink) {
+        openSheetLink.parentElement.style.display = 'none';
+    }
+
+    function getAttendingValue() {
+        const checked = form.querySelector('input[name="attending"]:checked');
+        return checked ? checked.value : '';
+    }
+
+    function toggleGuestsByAttendance() {
+        const attending = getAttendingValue();
+        const isAttending = attending === 'Иә';
+        if (!guestsWrapper) return;
+        if (isAttending) {
+            guestsWrapper.classList.remove('is-hidden');
+            guestCountEl && guestCountEl.setAttribute('required', 'required');
+        } else {
+            guestsWrapper.classList.add('is-hidden');
+            guestCountEl && guestCountEl.removeAttribute('required');
+        }
+    }
+
+    form.addEventListener('change', (e) => {
+        if (e.target && e.target.name === 'attending') {
+            toggleGuestsByAttendance();
+        }
+    });
+    // Initialize state on load
+    toggleGuestsByAttendance();
+
+    function setError(id, msg) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = msg || '';
+    }
+
+    function validate() {
+        let ok = true;
+        setError('err-fullName');
+        setError('err-attending');
+        setError('err-guestCount');
+
+        const fullName = (document.getElementById('fullName')?.value || '').trim();
+        if (!fullName) { setError('err-fullName', 'Аты‑жөніңізді жазыңыз.'); ok = false; }
+
+        const attending = getAttendingValue();
+        if (!attending) { setError('err-attending', 'Қатысатынын таңдаңыз.'); ok = false; }
+
+        if (attending === 'Иә') {
+            const guestCount = (guestCountEl?.value || '').trim();
+            if (!guestCount) { setError('err-guestCount', 'Қонақ санын таңдаңыз.'); ok = false; }
+        }
+        return ok;
+    }
+
+    async function submitRSVP(e) {
+        e.preventDefault();
+        if (!validate()) return;
+
+        const payload = {
+            timestamp: new Date().toISOString(),
+            fullName: (document.getElementById('fullName')?.value || '').trim(),
+            attending: getAttendingValue(),
+            guestCount: getAttendingValue() === 'Иә' ? (guestCountEl?.value || '1') : '0',
+            phone: (document.getElementById('phone')?.value || '').trim(),
+            note: (document.getElementById('note')?.value || '').trim(),
+            ua: navigator.userAgent
+        };
+
+        submitBtn.disabled = true;
+        submitBtn.classList.add('loading');
+        statusEl.textContent = 'Жіберілуде…';
+
+        try {
+            const res = await fetch(RSVP_ENDPOINT, {
+                method: 'POST',
+                // Use text/plain to avoid CORS preflight issues with Apps Script
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            });
+
+            let data = {};
+            const text = await res.text().catch(() => '');
+            try { data = JSON.parse(text || '{}'); } catch (_) { data = {}; }
+
+            if (res.ok && (data.success === true || data.status === 'ok')) {
+                statusEl.textContent = '';
+                form.setAttribute('hidden', 'hidden');
+                resultWrap.removeAttribute('hidden');
+                form.reset();
+            } else {
+                const msg = (data && (data.message || data.error)) || (text && text.slice(0,200)) || `Қате орын алды (HTTP ${res.status}). Кейінірек қайталап көріңіз.`;
+                throw new Error(msg);
+            }
+        } catch (err) {
+            console.warn('Primary RSVP submit failed, attempting no-cors fallback…', err);
+            // As a fallback for Apps Script CORS limits, retry with no-cors (opaque response)
+            try {
+                await fetch(RSVP_ENDPOINT, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+                // We cannot read response in no-cors mode; optimistically show success
+                statusEl.textContent = '';
+                form.setAttribute('hidden', 'hidden');
+                resultWrap.removeAttribute('hidden');
+                form.reset();
+            } catch (fallbackErr) {
+                console.error('RSVP fallback submit error:', fallbackErr);
+                statusEl.textContent = String(fallbackErr.message || fallbackErr) || 'Қате орын алды.';
+            }
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('loading');
+        }
+    }
+
+    form.addEventListener('submit', submitRSVP);
+})();
