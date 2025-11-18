@@ -455,7 +455,7 @@ body {
 }
 
 .date-day {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'WonderfontCustom', serif;
     font-size: 8rem;
     font-weight: 700;
     color: var(--primary-color);
