@@ -394,7 +394,7 @@ body {
 }
 
 .section-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'WonderfontCustom', serif;
     font-size: 3rem;
     font-weight: 700;
     text-align: center;
@@ -569,7 +569,7 @@ body {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.3rem;
     font-style: italic;
-    line-height: 2;
+    line-height: 1.2;
     text-align: center;
     color: var(--text-light);
     padding: 30px;
