@@ -937,3 +937,148 @@ html {
     font-weight: 600; /* match section-title weight */
     color: var(--primary-color); /* keep the same accent color */
 }
+
+
+/* THEME ENHANCEMENTS — wedding palette and ornaments */
+:root {
+    /* Primary palette */
+    --primary-color: #d4a574; /* gold */
+    --accent-color: #c19a6b;  /* deep gold */
+
+    /* Neutrals */
+    --secondary-color: #f8f5f1; /* warm paper */
+    --paper: #fbfaf8;
+    --white: #ffffff;
+    --text-dark: #2c2c2c;
+    --text-light: #666666;
+
+    /* Sub‑accents and helpers */
+    --gold-100: #f7efe6;
+    --gold-200: #f1e3d3;
+    --gold-300: #e6d3bd;
+    --hairline: rgba(212, 165, 116, 0.35);
+
+    /* Shadows */
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.08);
+    --shadow-elev: 0 20px 60px rgba(0,0,0,0.12);
+}
+
+/* Soft paper feel without images */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(1200px 800px at 10% 0%, rgba(212,165,116,0.08), transparent 60%),
+        radial-gradient(1000px 700px at 100% 100%, rgba(193,154,107,0.06), transparent 55%);
+    z-index: -1;
+}
+
+/* Section title hairline divider */
+.section-title { position: relative; }
+.section-title::after {
+    content: "";
+    display: block;
+    width: 140px;
+    height: 2px;
+    margin: 14px auto 0;
+    background: linear-gradient(90deg, transparent, var(--hairline), transparent);
+}
+
+/* Top/Bottom ornaments with subtle heart */
+.ornament-top, .ornament-bottom {
+    position: relative;
+    height: 18px;
+    margin: 10px 0 20px;
+}
+.ornament-top::before, .ornament-bottom::before {
+    content: "";
+    position: absolute;
+    left: 12%; right: 12%; top: 50%;
+    transform: translateY(-50%);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--hairline), transparent);
+}
+.ornament-top::after, .ornament-bottom::after {
+    content: "♥";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -55%);
+    font-size: 12px;
+    color: var(--primary-color);
+    background: var(--secondary-color);
+    padding: 0 6px;
+    border-radius: 10px;
+}
+
+/* Card polish: consistent borders and softer shadow */
+.location-info,
+.betashar-section,
+.save-date-card {
+    border: 1px solid var(--gold-200);
+    box-shadow: var(--shadow-soft);
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.95)),
+        linear-gradient(0deg, var(--white), var(--white));
+}
+
+/* Slightly rounded corner accents (very subtle) */
+.location-info::before,
+.betashar-section::before,
+.save-date-card::before {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.7);
+}
+
+/* Calendar highlight refinement */
+.cal-cell.is-highlighted .cal-number { color: var(--primary-color); }
+.cal-cell.is-highlighted .cal-ring {
+    border-width: 3px;
+    box-shadow: 0 0 0 7px rgba(212,165,116,0.12), 0 10px 24px rgba(0,0,0,0.10);
+}
+.cal-cell.is-highlighted::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    background: radial-gradient(closest-side, rgba(212,165,116,0.12), transparent 70%);
+    z-index: 0;
+}
+
+/* Responsive refinements */
+@media (max-width: 600px) {
+    .section-title::after { width: 110px; }
+    .ornament-top::after, .ornament-bottom::after { font-size: 11px; }
+}
+
+
+/* Final overrides — apply fixed :root and finishing touches */
+:root {
+    --primary-color: #d4a574;
+    --accent-color: #c19a6b;
+    --secondary-color: #f8f5f1;
+    --paper: #fbfaf8;
+    --white: #ffffff;
+    --text-dark: #2c2c2c;
+    --text-light: #666666;
+    --gold-100: #f7efe6;
+    --gold-200: #f1e3d3;
+    --gold-300: #e6d3bd;
+    --hairline: rgba(212, 165, 116, 0.35);
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.08);
+    --shadow-elev: 0 20px 60px rgba(0,0,0,0.12);
+}
+
+/* Ensure cards anchor their decorative ::before overlays */
+.location-info,
+.betashar-section,
+.save-date-card { position: relative; }
+
+/* Remove earlier solid line background on ornaments to show new subtle version */
+.ornament-top,
+.ornament-bottom { background: none !important; }
