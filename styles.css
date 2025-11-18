@@ -426,6 +426,24 @@ body {
     font-size: 1.2rem;
     line-height: 1.8;
     color: var(--text-dark);
+    font-family: 'Cormorant Garamond', serif; /* match inline-title font */
+    font-weight: 600; /* match inline-title weight while keeping dark color */
+}
+
+/* Guest groups list under "Аса құрметті" */
+.invite-list p {
+    font-family: 'Cormorant Garamond', serif; /* same as section titles */
+    font-weight: 600; /* same weight as titles */
+    color: var(--text-dark); /* keep dark text, not gold */
+    font-size: 1.5rem; /* bigger than default paragraph */
+    line-height: 1.6;
+    margin: 6px 0; /* gentle spacing between lines */
+}
+
+@media (max-width: 600px) {
+    .invite-list p {
+        font-size: 1.3rem; /* comfortable on small screens */
+    }
 }
 
 .invitation-text strong {
@@ -799,3 +817,123 @@ html {
     pointer-events: auto;
 }
 
+
+
+/* Save-the-date calendar styles */
+.save-date-card {
+    display: inline-block;
+    background: #ffffff;
+    padding: 30px 30px 20px;
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+    margin: 32px 0;
+}
+
+.calendar {
+    width: 340px;
+    max-width: 90vw;
+}
+
+.calendar-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 10px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    margin-bottom: 14px;
+}
+
+.calendar-header .cal-month {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.calendar-header .cal-year {
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.cal-weekday {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    letter-spacing: 0.5px;
+}
+
+.cal-cell {
+    position: relative;
+    height: 44px;
+    background: #fff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    color: var(--text-dark);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+}
+
+.cal-cell.is-empty {
+    background: transparent;
+    box-shadow: none;
+}
+
+.cal-cell.is-highlighted {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.cal-number {
+    position: relative;
+    z-index: 2;
+    font-size: 1.1rem;
+}
+
+.cal-ring {
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    border: 3px solid var(--primary-color);
+    border-radius: 50%;
+    z-index: 1;
+    box-shadow: 0 0 0 6px rgba(212, 165, 116, 0.12), 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.calendar-note {
+    margin-top: 16px;
+    font-size: 1.05rem;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+@media (max-width: 480px) {
+    .calendar { width: 300px; }
+    .calendar-header { font-size: 1.7rem; }
+    .cal-cell { height: 40px; }
+    .cal-ring { width: 34px; height: 34px; }
+}
+
+
+/* Small variant of section title for in-card headings */
+.section-title--sm {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+    line-height: 1.2;
+}
+
+
+/* Inline title style for highlighted phrases inside paragraphs */
+.inline-title {
+    font-family: 'Cormorant Garamond', serif; /* match section-title font */
+    font-weight: 600; /* match section-title weight */
+    color: var(--primary-color); /* keep the same accent color */
+}
