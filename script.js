@@ -10,6 +10,7 @@ const bgMusic = document.getElementById('bgMusic');
 let isPlaying = false;
 
 function startMusic() {
+    console.log('just check')
     if (!isPlaying) {
         bgMusic.play().then(() => {
             isPlaying = true;
